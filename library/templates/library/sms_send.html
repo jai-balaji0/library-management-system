@@ -1,0 +1,70 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow">
+
+            <div class="card-header bg-dark text-white py-3">
+                <h4><i class="bi bi-phone"></i> Send SMS Notification</h4>
+            </div>
+
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Member ID -->
+                    <div class="mb-3">
+                        <label class="form-label">Member ID</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-badge"></i>
+                            </span>
+                            <input type="text"
+                                   name="member_id"
+                                   class="form-control"
+                                   placeholder="Enter Member ID"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- SMS Type -->
+                    <div class="mb-3">
+                        <label class="form-label">Notification Type</label>
+                        <select name="sms_type" class="form-select" required>
+                            <option value="">Select Type</option>
+                            <option value="issued">Book Issued</option>
+                            <option value="due">Due Date Reminder</option>
+                            <option value="overdue">Overdue Alert</option>
+                            <option value="fine">Fine Generated</option>
+                        </select>
+                    </div>
+
+                    <!-- Custom Message -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Custom Message (Optional)
+                        </label>
+                        <textarea name="custom_message"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Leave empty to use default message">
+                        </textarea>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-dark btn-lg">
+                            <i class="bi bi-send"></i> Send SMS
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

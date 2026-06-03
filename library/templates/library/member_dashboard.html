@@ -1,0 +1,127 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<!-- Welcome -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="bi bi-person-circle"></i> My Dashboard</h3>
+    <span class="badge bg-dark fs-6">ID: {{ member.member_id }}</span>
+</div>
+
+<!-- Member Stats -->
+<div class="row mb-4">
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow text-white bg-dark">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6>Books Issued</h6>
+                    <h2>{{ total_issued }}</h2>
+                </div>
+                <i class="bi bi-book-half fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow text-white bg-danger">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6>Overdue Books</h6>
+                    <h2>{{ total_overdue }}</h2>
+                </div>
+                <i class="bi bi-exclamation-triangle fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow text-white bg-warning">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h6>Pending Fines</h6>
+                    <h2>₹{{ total_fine }}</h2>
+                </div>
+                <i class="bi bi-cash fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Quick Actions -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-dark text-white">
+        <h5><i class="bi bi-lightning"></i> Quick Actions</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <a href="{% url 'issued_list' %}" class="btn btn-warning w-100">
+                    <i class="bi bi-list-check"></i> My Issued Books
+                </a>
+            </div>
+            <div class="col-md-4 mb-2">
+                <a href="{% url 'fine_list' %}" class="btn btn-danger w-100">
+                    <i class="bi bi-cash"></i> My Fines
+                </a>
+            </div>
+            <div class="col-md-4 mb-2">
+                <a href="{% url 'my_reservations' %}" class="btn btn-info w-100">
+                    <i class="bi bi-bookmark-heart"></i> My Reservations
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- My Issued Books -->
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        <h5><i class="bi bi-book"></i> My Current Books</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>#</th>
+                        <th>Book</th>
+                        <th>Issue Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in my_books %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ issue.book.title }}</td>
+                        <td>{{ issue.issue_date }}</td>
+                        <td>{{ issue.due_date }}</td>
+                        <td>
+                            {% if issue.returned %}
+                                <span class="badge bg-success">Returned</span>
+                            {% elif issue.is_overdue %}
+                                <span class="badge bg-danger">
+                                    Overdue by {{ issue.days_overdue }} days
+                                </span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Issued</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            You have no books issued!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

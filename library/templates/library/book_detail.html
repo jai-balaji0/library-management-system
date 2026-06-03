@@ -1,0 +1,67 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow">
+
+            <div class="card-header bg-dark text-white py-3">
+                <h4><i class="bi bi-book"></i> Book Details</h4>
+            </div>
+
+            <div class="card-body p-4">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Title</th>
+                        <td>{{ book.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Author</th>
+                        <td>{{ book.author }}</td>
+                    </tr>
+                    <tr>
+                        <th>ISBN</th>
+                        <td>{{ book.isbn }}</td>
+                    </tr>
+                    <tr>
+                        <th>Category</th>
+                        <td>{{ book.category }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Copies</th>
+                        <td>{{ book.total_copies }}</td>
+                    </tr>
+                    <tr>
+                        <th>Available Copies</th>
+                        <td>{{ book.available_copies }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if book.is_available %}
+                                <span class="badge bg-success">Available</span>
+                            {% else %}
+                                <span class="badge bg-danger">Not Available</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ book.description|default:"No description" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Added Date</th>
+                        <td>{{ book.added_date }}</td>
+                    </tr>
+                </table>
+
+                <a href="{% url 'book_list' %}" class="btn btn-dark">
+                    <i class="bi bi-arrow-left"></i> Back to Books
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow">
+
+            <!-- Header -->
+            <div class="card-header bg-dark text-white py-3">
+                <h4><i class="bi bi-plus-circle"></i> 
+                    {% if edit_mode %}Edit Book{% else %}Add New Book{% endif %}
+                </h4>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label class="form-label">Book Title</label>
+                        <input type="text" 
+                               name="title" 
+                               class="form-control" 
+                               placeholder="Enter book title"
+                               value="{{ book.title }}"
+                               required>
+                    </div>
+
+                    <!-- Author -->
+                    <div class="mb-3">
+                        <label class="form-label">Author</label>
+                        <input type="text" 
+                               name="author" 
+                               class="form-control" 
+                               placeholder="Enter author name"
+                               value="{{ book.author }}"
+                               required>
+                    </div>
+
+                    <!-- ISBN -->
+                    <div class="mb-3">
+                        <label class="form-label">ISBN</label>
+                        <input type="text" 
+                               name="isbn" 
+                               class="form-control" 
+                               placeholder="Enter ISBN number"
+                               value="{{ book.isbn }}"
+                               required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select name="category" class="form-select" required>
+                            <option value="">Select Category</option>
+                            <option value="Fiction" {% if book.category == 'Fiction' %}selected{% endif %}>Fiction</option>
+                            <option value="Non-Fiction" {% if book.category == 'Non-Fiction' %}selected{% endif %}>Non-Fiction</option>
+                            <option value="Science" {% if book.category == 'Science' %}selected{% endif %}>Science</option>
+                            <option value="Technology" {% if book.category == 'Technology' %}selected{% endif %}>Technology</option>
+                            <option value="History" {% if book.category == 'History' %}selected{% endif %}>History</option>
+                            <option value="Mathematics" {% if book.category == 'Mathematics' %}selected{% endif %}>Mathematics</option>
+                            <option value="Other" {% if book.category == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Total Copies -->
+                    <div class="mb-3">
+                        <label class="form-label">Total Copies</label>
+                        <input type="number" 
+                               name="total_copies" 
+                               class="form-control" 
+                               placeholder="Number of copies"
+                               value="{{ book.total_copies|default:1 }}"
+                               min="1"
+                               required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label class="form-label">Description (Optional)</label>
+                        <textarea name="description" 
+                                  class="form-control" 
+                                  rows="3" 
+                                  placeholder="Enter book description">{{ book.description }}</textarea>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-dark">
+                            <i class="bi bi-save"></i> 
+                            {% if edit_mode %}Update Book{% else %}Add Book{% endif %}
+                        </button>
+                        <a href="{% url 'book_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="bi bi-cash-stack"></i> Fine Management</h3>
+    <span class="badge bg-danger fs-6">
+        Total Pending: ₹{{ total_pending }}
+    </span>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Member</th>
+                        <th>Book</th>
+                        <th>Days Overdue</th>
+                        <th>Fine Amount</th>
+                        <th>Status</th>
+                        {% if user.is_staff %}
+                        <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fine in fines %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ fine.member.user.get_full_name }}</td>
+                        <td>{{ fine.issued_book.book.title }}</td>
+                        <td>{{ fine.issued_book.days_overdue }} days</td>
+                        <td class="fw-bold text-danger">₹{{ fine.amount }}</td>
+                        <td>
+                            {% if fine.paid %}
+                                <span class="badge bg-success">Paid</span>
+                            {% else %}
+                                <span class="badge bg-danger">Unpaid</span>
+                            {% endif %}
+                        </td>
+                        {% if user.is_staff %}
+                        <td>
+                            {% if not fine.paid %}
+                            <a href="{% url 'mark_fine_paid' fine.id %}"
+                               class="btn btn-sm btn-success"
+                               onclick="return confirm('Mark this fine as paid?')">
+                                <i class="bi bi-check-circle"></i> Mark Paid
+                            </a>
+                            {% else %}
+                                <span class="text-muted">Done</span>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="bi bi-emoji-smile fs-1"></i>
+                            <p>No fines found!</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

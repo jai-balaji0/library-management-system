@@ -1,0 +1,115 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-dark text-white py-3">
+        <h4><i class="bi bi-search"></i> Search Books</h4>
+    </div>
+    <div class="card-body">
+        <form method="GET">
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <input type="text"
+                           name="search"
+                           class="form-control"
+                           placeholder="Title or Author..."
+                           value="{{ request.GET.search }}">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="text"
+                           name="isbn"
+                           class="form-control"
+                           placeholder="Search by ISBN..."
+                           value="{{ request.GET.isbn }}">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Science">Science</option>
+                        <option value="Technology">Technology</option>
+                        <option value="History">History</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <button type="submit" class="btn btn-dark w-100">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Search Results -->
+{% if query %}
+<h5 class="mb-3 text-muted">
+    Results for: <strong>{{ query }}</strong>
+    ({{ books|length }} found)
+</h5>
+{% endif %}
+
+<div class="row">
+    {% for book in books %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+
+                <!-- Book Title -->
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="text-muted mb-1">
+                    <i class="bi bi-person"></i> {{ book.author }}
+                </p>
+                <p class="text-muted mb-1">
+                    <i class="bi bi-upc"></i> {{ book.isbn }}
+                </p>
+                <p class="mb-2">
+                    <span class="badge bg-secondary">
+                        {{ book.category }}
+                    </span>
+                </p>
+
+                <!-- Availability -->
+                {% if book.is_available %}
+                    <span class="badge bg-success mb-2">
+                        Available ({{ book.available_copies }} copies)
+                    </span>
+                {% else %}
+                    <span class="badge bg-danger mb-2">
+                        Not Available
+                    </span>
+                {% endif %}
+
+            </div>
+
+            <!-- Card Footer Buttons -->
+            <div class="card-footer d-flex gap-2">
+                <a href="{% url 'book_detail' book.id %}"
+                   class="btn btn-sm btn-info">
+                    <i class="bi bi-eye"></i> View
+                </a>
+                {% if not book.is_available and not user.is_staff %}
+                <a href="{% url 'reserve_book' book.id %}"
+                   class="btn btn-sm btn-warning">
+                    <i class="bi bi-bookmark"></i> Reserve
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <i class="bi bi-inbox fs-1"></i>
+            <p class="mt-2">No books found! Try different keywords.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

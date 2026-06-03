@@ -1,0 +1,66 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="bi bi-people"></i> All Members</h3>
+    <span class="badge bg-dark fs-6">
+        Total: {{ members|length }}
+    </span>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Member ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Joined Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <span class="badge bg-dark">
+                                {{ member.member_id }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>{{ member.user.get_full_name }}</strong>
+                        </td>
+                        <td>{{ member.user.email }}</td>
+                        <td>{{ member.phone }}</td>
+                        <td>{{ member.address }}</td>
+                        <td>{{ member.joined_date }}</td>
+                        <td>
+                            {% if member.user.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="bi bi-people fs-1"></i>
+                            <p>No members registered yet!</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

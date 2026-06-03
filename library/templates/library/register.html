@@ -1,0 +1,152 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center" style="margin-top: 20px;">
+    <div class="col-md-6">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <i class="bi bi-person-plus text-warning" style="font-size: 3rem;"></i>
+            <h3 class="fw-bold mt-2" style="color: #1a1a2e;">Create Account</h3>
+            <p class="text-muted">Fill in details to register as a member</p>
+        </div>
+
+        <div class="card shadow-lg" style="border-radius: 15px;">
+
+            <!-- Card Header -->
+            <div class="card-header text-white text-center py-3"
+                 style="background: linear-gradient(135deg, #1a1a2e, #16213e);
+                        border-radius: 15px 15px 0 0;">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-badge"></i> Member Registration
+                </h5>
+            </div>
+
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- First Name & Last Name -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-person text-warning"></i> First Name
+                            </label>
+                            <input type="text"
+                                   name="first_name"
+                                   class="form-control"
+                                   placeholder="First name"
+                                   required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-person text-warning"></i> Last Name
+                            </label>
+                            <input type="text"
+                                   name="last_name"
+                                   class="form-control"
+                                   placeholder="Last name"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-envelope text-warning"></i> Email
+                        </label>
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="Enter your email"
+                               required>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-at text-warning"></i> Username
+                        </label>
+                        <input type="text"
+                               name="username"
+                               class="form-control"
+                               placeholder="Choose a username"
+                               required>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-phone text-warning"></i> Phone Number
+                        </label>
+                        <input type="text"
+                               name="phone"
+                               class="form-control"
+                               placeholder="10 digit phone number"
+                               maxlength="10"
+                               required>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-geo-alt text-warning"></i> Address
+                        </label>
+                        <textarea name="address"
+                                  class="form-control"
+                                  rows="2"
+                                  placeholder="Enter your full address"
+                                  required></textarea>
+                    </div>
+
+                    <!-- Password Row -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-lock text-warning"></i> Password
+                            </label>
+                            <input type="password"
+                                   name="password1"
+                                   class="form-control"
+                                   placeholder="Enter password"
+                                   required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-lock-fill text-warning"></i> Confirm
+                            </label>
+                            <input type="password"
+                                   name="password2"
+                                   class="form-control"
+                                   placeholder="Confirm password"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Register Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg text-white fw-bold"
+                                style="background: linear-gradient(135deg, #1a1a2e, #16213e);
+                                       border-radius: 10px;
+                                       padding: 12px;">
+                            <i class="bi bi-person-check"></i> Create Account
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer text-center py-3"
+                 style="border-radius: 0 0 15px 15px; background: #f8f9fa;">
+                Already have an account?
+                <a href="{% url 'login' %}" class="fw-bold text-decoration-none"
+                   style="color: #1a1a2e;">
+                    Login here
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

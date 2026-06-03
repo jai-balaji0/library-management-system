@@ -1,0 +1,49 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow">
+
+            <div class="card-header bg-dark text-white py-3">
+                <h4><i class="bi bi-upc-scan"></i> Book Barcode</h4>
+            </div>
+
+            <div class="card-body p-4 text-center">
+
+                <!-- Book Info -->
+                <h5 class="mb-1">{{ book.title }}</h5>
+                <p class="text-muted mb-3">by {{ book.author }}</p>
+
+                <!-- Barcode Image -->
+                {% if book.barcode_image %}
+                    <img src="{{ book.barcode_image.url }}"
+                         class="img-fluid border p-3 mb-3"
+                         style="max-width: 350px;"
+                         alt="Barcode">
+                    <p class="text-muted">ISBN: {{ book.isbn }}</p>
+                {% else %}
+                    <div class="alert alert-warning">
+                        Barcode not generated yet!
+                    </div>
+                {% endif %}
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <a href="{% url 'generate_barcode' book.id %}"
+                       class="btn btn-dark">
+                        <i class="bi bi-upc"></i> Generate Barcode
+                    </a>
+                    <a href="{% url 'book_list' %}"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="bi bi-bookmark-check"></i> All Reservations</h3>
+    <span class="badge bg-dark fs-6">
+        Total: {{ reservations|length }}
+    </span>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Member</th>
+                        <th>Book</th>
+                        <th>Reserved Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in reservations %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ res.member.user.get_full_name }}</td>
+                        <td>{{ res.book.title }}</td>
+                        <td>{{ res.reserved_date }}</td>
+                        <td>
+                            {% if res.active %}
+                                <span class="badge bg-warning text-dark">
+                                    Active
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary">
+                                    Cancelled
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if res.active %}
+                            <a href="{% url 'cancel_reservation' res.id %}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Cancel this reservation?')">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            {% else %}
+                                <span class="text-muted">Cancelled</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-bookmark fs-1"></i>
+                            <p>No reservations found!</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

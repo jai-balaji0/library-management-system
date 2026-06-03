@@ -1,0 +1,151 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+
+<!-- Welcome -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="bi bi-speedometer2"></i> Admin Dashboard</h3>
+    <span class="text-muted">Welcome, {{ user.get_full_name }}</span>
+</div>
+
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="stat-card bg-gradient-dark">
+            <i class="bi bi-books icon"></i>
+            <p>Total Books</p>
+            <h2>{{ total_books }}</h2>
+            <a href="{% url 'book_list' %}" 
+               class="text-warning text-decoration-none small">
+                View All →
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card bg-gradient-blue">
+            <i class="bi bi-people icon"></i>
+            <p>Total Members</p>
+            <h2>{{ total_members }}</h2>
+            <a href="{% url 'member_list' %}"
+               class="text-warning text-decoration-none small">
+               View all →
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card bg-gradient-orange">
+            <i class="bi bi-book-half icon"></i>
+            <p>Issued Books</p>
+            <h2>{{ total_issued }}</h2>
+            <a href="{% url 'issued_list' %}" 
+               class="text-white text-decoration-none small">
+                View Issued →
+            </a>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card bg-gradient-red">
+            <i class="bi bi-exclamation-triangle icon"></i>
+            <p>Overdue Books</p>
+            <h2>{{ total_overdue }}</h2>
+            <span class="small">Past Due Date</span>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h5><i class="bi bi-lightning"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'book_add' %}" class="btn btn-dark w-100">
+                            <i class="bi bi-plus-circle"></i> Add Book
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'issue_book' %}" class="btn btn-warning w-100">
+                            <i class="bi bi-book-half"></i> Issue Book
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'return_book' %}" class="btn btn-success w-100">
+                            <i class="bi bi-arrow-return-left"></i> Return Book
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'fine_list' %}" class="btn btn-danger w-100">
+                            <i class="bi bi-cash"></i> View Fines
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'sms_send' %}" class="btn btn-info w-100">
+                            <i class="bi bi-phone"></i> Send SMS
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'reservation_list' %}" class="btn btn-info w-100">
+                            <i class="bi bi-bookmark-check"></i> Reservations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Issued Books -->
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        <h5><i class="bi bi-clock-history"></i> Recently Issued Books</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>#</th>
+                        <th>Member</th>
+                        <th>Book</th>
+                        <th>Issue Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in recent_issued %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ issue.member.user.get_full_name }}</td>
+                        <td>{{ issue.book.title }}</td>
+                        <td>{{ issue.issue_date }}</td>
+                        <td>{{ issue.due_date }}</td>
+                        <td>
+                            {% if issue.returned %}
+                                <span class="badge bg-success">Returned</span>
+                            {% elif issue.is_overdue %}
+                                <span class="badge bg-danger">Overdue</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Issued</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            No books issued yet!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
